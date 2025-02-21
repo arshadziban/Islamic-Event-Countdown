@@ -8,3 +8,6 @@ Islamic Event Countdown is a simple web page that displays countdowns to signifi
 - Countdown timer for upcoming Islamic events
 - User-friendly interface
 - Lightweight and responsive design
+
+## Live Demo
+[Islamic Event Countdown](https://arshadziban.github.io/Islamic-Event-Countdown/)
