@@ -20,17 +20,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            min-height: 120vh;
             color: #000;
             padding: 20px;
+            overflow-y: auto; 
         }
         .social-icons {
             position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 0;
+            left: 0;
+            width: 100%;
             display: flex;
+            justify-content: center;
             gap: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -45,11 +50,38 @@
     </p>
     <p class="text-xs md:text-sm text-red-600 mt-2">NB: The date may change</p>
     
-    <div id="countdown" class="text-4xl md:text-6xl font-semiblod mt-6 flex justify-center gap-2 md:gap-4">
+    <div id="countdown" class="text-4xl md:text-6xl font-semibold mt-6 flex justify-center gap-2 md:gap-4">
         <span id="days">00</span>D
         <span id="hours">00</span>H
         <span id="minutes">00</span>M
         <span id="seconds">00</span>S
+    </div>
+
+    <!-- Special Nights of Ramadan (Horizontal Boxes) -->
+    <div class="bg-white/80 p-6 mt-6 rounded-lg shadow-lg max-w-4xl w-full">
+        <h2 class="text-2xl font-bold text-black-700 mb-4">Special Nights of Ramadan 2025</h2>
+        <div class="flex flex-wrap justify-center gap-4">
+            <div class="bg-green-200 text-black p-4 rounded-lg shadow-md w-40 text-center">
+                <span class="block text-lg font-semibold">21st Night</span>
+                <span class="block text-sm">March 21 (after Maghrib) to March 22 (Fajr)</span>
+            </div>
+            <div class="bg-green-200 text-black p-4 rounded-lg shadow-md w-40 text-center">
+                <span class="block text-lg font-semibold">23rd Night</span>
+                <span class="block text-sm"> March 23 (after Maghrib) to March 24 (Fajr)</span>
+            </div>
+            <div class="bg-green-200 text-black p-4 rounded-lg shadow-md w-40 text-center">
+                <span class="block text-lg font-semibold">25th Night</span>
+                <span class="block text-sm">March 25 (after Maghrib) to March 26 (Fajr)</span>
+            </div>
+            <div class="bg-green-200 text-black p-4 rounded-lg shadow-md w-40 text-center">
+                <span class="block text-lg font-semibold">27th Night</span>
+                <span class="block text-sm">March 27 (after Maghrib) to March 28 (Fajr)</span>
+            </div>
+            <div class="bg-green-200 text-black p-4 rounded-lg shadow-md w-40 text-center">
+                <span class="block text-lg font-semibold">29th Night</span>
+                <span class="block text-sm"> March 29 (after Maghrib) to March 30 (Fajr)</span>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -69,7 +101,7 @@
         updateCountdown();
     </script>
 
-    <!-- Social Media Icons at the Bottom -->
+    <!-- Social Media Icons -->
     <div class="social-icons">
         <a href="https://linkedin.com/in/shah-md-arshad-rahman-ziban-484649263" target="_blank" class="text-2xl text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
         <a href="https://github.com/arshadziban" target="_blank" class="text-2xl text-gray-800 hover:text-gray-900"><i class="fab fa-github"></i></a>
