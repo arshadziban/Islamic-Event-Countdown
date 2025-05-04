@@ -59,6 +59,23 @@
         .content-wrapper {
             margin-bottom: 80px; /* Added to prevent content from being hidden behind social icons */
         }
+        .hadith-container {
+            max-width: 800px;
+            margin: 30px auto 0;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .hadith-text {
+            /* Removed font-style: italic; */
+            line-height: 1.6;
+        }
+        .hadith-source {
+            font-size: 0.9em;
+            margin-top: 10px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -78,6 +95,16 @@
             <span id="hours">00</span>H
             <span id="minutes">00</span>M
             <span id="seconds">00</span>S
+        </div>
+        
+        <!-- Hadith Container -->
+        <div class="hadith-container">
+            <p class="hadith-text">
+                <strong>Narrated by Abu Huraira (RA):</strong><br>
+                The Prophet Muhammad (PBUH) said:<br>
+                "Whoever performs Hajj for the sake of Allah and does not engage in obscene language or sinful behavior will return (free from sins) as the day his mother bore him."
+            </p>
+            <p class="hadith-source">— Sahih al-Bukhari (Volume 2, Book 26, Hadith 596)</p>
         </div>
     </div>
 
