@@ -1,154 +1,490 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islamic Event Countdown</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <style>
-        @font-face {
-            font-family: 'Bahnschrift';
-            src: local('Bahnschrift');
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0d5c3f',
+                        'primary-dark': '#083d2a',
+                        'primary-light': '#1a8a5f',
+                        gold: '#c9a84c',
+                        'gold-light': '#e8d48b',
+                        'gold-dark': '#a07d2e',
+                        cream: '#fdf8f0',
+                        'cream-dark': '#f5edd8',
+                    },
+                    fontFamily: {
+                        amiri: ['Noto Naskh Arabic', 'serif'],
+                        poppins: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
         }
+    </script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            background: url('assets/bg.jpg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Bahnschrift', sans-serif;
-            text-align: center;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Changed from flex-start to center */
-            min-height: 100vh;
-            height: auto; 
-            color: #000;
-            padding: 20px;
-            overflow-y: auto; 
-            position: relative; /* Added for social icons positioning */
+            background: linear-gradient(160deg, #062a1c 0%, #0d5c3f 40%, #083d2a 100%);
+            color: #fff;
+            overflow-x: hidden;
         }
-        .social-icons {
+
+        /* Islamic geometric pattern overlay */
+        body::before {
+            content: '';
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(201, 168, 76, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(201, 168, 76, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.02) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(201, 168, 76, 0.15);
+            animation: float-particle linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Ornamental divider */
+        .ornament {
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+            gap: 12px;
+            margin: 16px 0;
         }
-        /* Fix for mobile view */
-        @media (max-width: 768px) {
-            body {
-                min-height: 100vh;
-                height: auto; 
-                padding-bottom: 100px; 
-            }
-            .social-icons {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                padding: 10px;
-            }
+        .ornament::before, .ornament::after {
+            content: '';
+            height: 1px;
+            width: 60px;
+            background: linear-gradient(90deg, transparent, #c9a84c, transparent);
         }
-        .content-wrapper {
-            margin-bottom: 80px; /* Added to prevent content from being hidden behind social icons */
+        .ornament-icon {
+            color: #c9a84c;
+            font-size: 10px;
         }
-        .hadith-container {
-            max-width: 800px;
-            margin: 30px auto 0;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.85);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        /* Countdown card styles */
+        .countdown-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(201, 168, 76, 0.25);
+            border-radius: 16px;
+            padding: 16px 12px;
+            min-width: 80px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
-        .hadith-text {
-            /* Removed font-style: italic; */
-            line-height: 1.6;
+        .countdown-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #c9a84c, #e8d48b, #c9a84c);
         }
-        .hadith-source {
-            font-size: 0.9em;
-            margin-top: 10px;
-            color: #555;
+        .countdown-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(201, 168, 76, 0.5);
+            box-shadow: 0 12px 40px rgba(201, 168, 76, 0.15);
         }
+        .countdown-number {
+            font-size: 2.8rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #fff 0%, #e8d48b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        em {
+            font-style: normal;
+        }
+        .countdown-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #c9a84c;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Pulse animation for seconds */
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.2); }
+            50% { box-shadow: 0 0 20px 4px rgba(201, 168, 76, 0.15); }
+        }
+        .pulse-active {
+            animation: pulse-gold 2s ease-in-out infinite;
+        }
+
+        /* Glass card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+
+        /* Badge */
+        .event-badge {
+            background: linear-gradient(135deg, #c9a84c, #a07d2e);
+            color: #fff;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+        }
+
+        /* Islamic arch decoration */
+        .arch-frame {
+            position: relative;
+            padding: 24px 30px;
+        }
+        .arch-frame::before {
+            content: none;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(201, 168, 76, 0.2);
+        }
+        .social-link {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            color: #c9a84c;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .social-link:hover {
+            background: #c9a84c;
+            color: #062a1c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(201, 168, 76, 0.3);
+        }
+
+        /* Hadith section */
+        .hadith-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        .hadith-card:hover {
+            border-color: rgba(201, 168, 76, 0.35);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Fade-in animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
+
+        /* Responsive */
+        @media (min-width: 640px) {
+            .countdown-card { min-width: 110px; padding: 24px 16px; }
+            .countdown-number { font-size: 3.5rem; }
+            .countdown-label { font-size: 0.75rem; }
+        }
+        @media (min-width: 1024px) {
+            .countdown-card { min-width: 130px; padding: 28px 20px; }
+            .countdown-number { font-size: 4rem; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #062a1c; }
+        ::-webkit-scrollbar-thumb { background: #c9a84c; border-radius: 3px; }
     </style>
 </head>
 <body>
-    <div class="content-wrapper"> <!-- Added wrapper div -->
-        <h1 class="text-4xl md:text-5xl font-bold">Islamic Event Countdown</h1>
-        <h2 class="text-xl md:text-2xl font-semibold flex items-center justify-center gap-2 mt-4">
-            <img src="assets/calender.png" alt="Calendar Icon" class="w-8 h-8"> Upcoming Event
-        </h2>
-        <h1 class="text-3xl md:text-4xl font-semibold mt-4">First Day of Ramadan</h1>
-        <p class="bg-green-200 text-black-900 px-3 py-1 md:px-4 md:py-2 rounded-lg mt-2 inline-block text-sm md:text-base">
-           Evening of Tue, Feb 17, 2026 | 1st Ramadan 1447
-        </p>
-        <p class="text-xs md:text-sm text-red-600 mt-2">NB: The date may change</p>
-        
-        <div id="countdown" class="text-4xl md:text-6xl font-semibold mt-6 flex justify-center gap-2 md:gap-4">
-            <span id="days">00</span>D
-            <span id="hours">00</span>H
-            <span id="minutes">00</span>M
-            <span id="seconds">00</span>S
+
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 flex flex-col items-center justify-center relative z-10 mb-20">
+
+        <!-- Site Title -->
+        <div class="text-center animate-fade-in delay-2 mt-2">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold font-poppins tracking-tight">
+                Islamic Event
+                <span class="block mt-1 bg-gradient-to-r from-gold-light via-gold to-gold-dark bg-clip-text text-transparent">
+                    Countdown
+                </span>
+            </h1>
         </div>
-        
-        <!-- Hadith Container
-        <div class="hadith-container">
-            <p class="hadith-text">
-                <strong>1. Fasting on the Day of Ashuraa</strong><br><br>
-                Narrated by Ibn Abbas (RA):<br>
-                "The Prophet (ﷺ) came to Medina and saw the Jews fasting on the day of Ashura. He said, ‘What is this?’ They said, ‘This is a righteous day. It is the day when Allah saved His servants from the people of Israel from their enemies, so Moses fasted on this day.’ The Prophet said, ‘We have more right to Moses than you.’ So he fasted on that day and commanded the Muslims to fast as well."<br>
-                <span class="hadith-source">— [Sahih al-Bukhari 2004, Sahih Muslim 1130]</span>
+
+        <!-- Main Glass Card -->
+        <div class="glass-card w-full mt-8 sm:mt-10 arch-frame animate-fade-in delay-3 flex flex-col items-center text-center">
+
+            <!-- Upcoming Event Label -->
+            <div class="text-center mb-6">
+                <span class="event-badge">
+                    <i class="fas fa-mosque text-xs"></i>
+                    Upcoming Event
+                </span>
+            </div>
+
+            <!-- Event Name -->
+            <h2 class="text-center text-2xl sm:text-3xl md:text-4xl font-bold font-poppins mb-2">
+                First Day of Ramadan
+            </h2>
+
+            <!-- Event Date -->
+            <div class="text-center mb-2">
+                <p class="text-sm sm:text-base text-cream-dark/80 font-light">
+                    <i class="far fa-calendar-alt text-gold mr-2"></i>
+                    Evening of Tue, Feb 17, 2026
+                    <span class="mx-2 text-gold/40">|</span>
+                    1st Ramadan 1447 AH
+                </p>
+            </div>
+            <p class="text-center text-xs text-gold/50 mb-8">
+                <i class="fas fa-info-circle mr-1"></i> Date is subject to moon sighting
             </p>
-            
-            <hr class="my-4 border-gray-300">
-            
-            <p class="hadith-text">
-                <strong>2. Expiation of Sins</strong><br><br>
-                Narrated by Abu Qatadah (RA):<br>
-                "The Messenger of Allah (ﷺ) was asked about fasting on the Day of Ashura. He said, 'It expiates the sins of the previous year.'"<br>
-                <span class="hadith-source">— [Sahih Muslim 1162]</span>
-            </p>
-            
-            <hr class="my-4 border-gray-300">
-            
-            <p class="hadith-text">
-                <strong>3. Fasting on the 9th and 10th (Tasu'a and Ashura)</strong><br><br>
-                Narrated by Ibn Abbas (RA):<br>
-                "When the Messenger of Allah (ﷺ) fasted on the Day of Ashura and commanded Muslims to fast as well, they said: 'O Messenger of Allah, it is a day that is venerated by the Jews and Christians.' The Prophet said: 'Next year, if Allah wills, we will fast on the ninth day (as well).' But the Prophet died before the next year came."<br>
-                <span class="hadith-source">— [Sahih Muslim 1134]</span>
-            </p>
+
+            <!-- Countdown Timer -->
+            <div id="countdown" class="flex justify-center items-center gap-3 sm:gap-4 md:gap-6 flex-wrap">
+                <div class="countdown-card animate-fade-in delay-4">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <span class="text-2xl sm:text-3xl text-gold/40 font-light self-start mt-4 sm:mt-6">:</span>
+                <div class="countdown-card animate-fade-in delay-5">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <span class="text-2xl sm:text-3xl text-gold/40 font-light self-start mt-4 sm:mt-6">:</span>
+                <div class="countdown-card animate-fade-in delay-6">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <span class="text-2xl sm:text-3xl text-gold/40 font-light self-start mt-4 sm:mt-6">:</span>
+                <div class="countdown-card pulse-active animate-fade-in delay-7">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mt-8 px-4 w-full">
+                <div class="flex justify-between text-xs text-gold/50 mb-2">
+                    <span>Today</span>
+                    <span id="progress-text">-- days remaining</span>
+                    <span>Ramadan</span>
+                </div>
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-gold-dark via-gold to-gold-light rounded-full transition-all duration-1000" style="width: 0%"></div>
+                </div>
+            </div>
         </div>
-    </div> -->
+
+        <!-- Hadith Section -->
+        <div class="w-full mt-10 animate-fade-in delay-6">
+            <div class="text-center mb-6">
+                <h3 class="text-lg sm:text-xl font-semibold text-gold-light font-poppins">
+                    <i class="fas fa-book-quran mr-2 text-gold"></i>
+                    Related Hadiths
+                </h3>
+                <div class="ornament">
+                    <span class="ornament-icon"><i class="fas fa-star" style="font-size:8px"></i></span>
+                </div>
+            </div>
+
+            <div class="grid gap-4 sm:gap-5">
+                <!-- Hadith 1 -->
+                <div class="hadith-card">
+                    <h4 class="text-gold font-semibold text-sm mb-3 flex items-center gap-2">
+                        <span class="w-6 h-6 flex items-center justify-center rounded-full bg-gold/20 text-gold text-xs font-bold">1</span>
+                        Virtue of Ramadan
+                    </h4>
+                    <p class="text-white/80 text-sm leading-relaxed">
+                        Narrated by Abu Hurairah (RA): The Messenger of Allah (&#xFDFA;) said:
+                        <em class="text-cream-dark block mt-2 border-l-2 border-gold/30 pl-3">
+                            "When Ramadan begins, the gates of Paradise are opened, the gates of Hell are closed, and the devils are chained."
+                        </em>
+                    </p>
+                    <p class="text-gold/50 text-xs mt-3 font-medium">Sahih al-Bukhari 1899, Sahih Muslim 1079</p>
+                </div>
+
+                <!-- Hadith 2 -->
+                <div class="hadith-card">
+                    <h4 class="text-gold font-semibold text-sm mb-3 flex items-center gap-2">
+                        <span class="w-6 h-6 flex items-center justify-center rounded-full bg-gold/20 text-gold text-xs font-bold">2</span>
+                        Reward of Fasting
+                    </h4>
+                    <p class="text-white/80 text-sm leading-relaxed">
+                        Narrated by Abu Hurairah (RA): The Prophet (&#xFDFA;) said:
+                        <em class="text-cream-dark block mt-2 border-l-2 border-gold/30 pl-3">
+                            "Every deed of the son of Adam is for him, except fasting; it is for Me and I shall reward for it."
+                        </em>
+                    </p>
+                    <p class="text-gold/50 text-xs mt-3 font-medium">Sahih al-Bukhari 1904, Sahih Muslim 1151</p>
+                </div>
+
+                <!-- Hadith 3 -->
+                <div class="hadith-card">
+                    <h4 class="text-gold font-semibold text-sm mb-3 flex items-center gap-2">
+                        <span class="w-6 h-6 flex items-center justify-center rounded-full bg-gold/20 text-gold text-xs font-bold">3</span>
+                        Forgiveness in Ramadan
+                    </h4>
+                    <p class="text-white/80 text-sm leading-relaxed">
+                        Narrated by Abu Hurairah (RA): The Prophet (&#xFDFA;) said:
+                        <em class="text-cream-dark block mt-2 border-l-2 border-gold/30 pl-3">
+                            "Whoever fasts during Ramadan out of sincere faith and hoping to attain Allah's rewards, all his past sins will be forgiven."
+                        </em>
+                    </p>
+                    <p class="text-gold/50 text-xs mt-3 font-medium">Sahih al-Bukhari 38, Sahih Muslim 760</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dua -->
+        <div class="text-center mt-10 animate-fade-in delay-7">
+            <p class="font-amiri text-xl sm:text-2xl text-gold-light/80">
+                &#x0627;&#x0644;&#x0644;&#x0651;&#x064E;&#x0647;&#x064F;&#x0645;&#x0651;&#x064E; &#x0628;&#x064E;&#x0644;&#x0651;&#x0650;&#x063A;&#x0652;&#x0646;&#x064E;&#x0627; &#x0631;&#x064E;&#x0645;&#x064E;&#x0636;&#x064E;&#x0627;&#x0646;
+            </p>
+            <p class="text-xs text-white/40 mt-1">O Allah, let us reach Ramadan.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer fixed bottom-0 left-0 right-0 z-50 py-3 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p class="text-xs text-white/30 order-2 sm:order-1">
+                Made with <i class="fas fa-heart text-gold/50 mx-1"></i> for the Ummah
+            </p>
+            <div class="flex items-center gap-3 order-1 sm:order-2">
+                <a href="https://linkedin.com/in/shah-md-arshad-rahman-ziban-484649263" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/arshadziban" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.facebook.com/share/1HanqZhnE8/" target="_blank" rel="noopener" class="social-link" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.behance.net/arshadziban" target="_blank" rel="noopener" class="social-link" aria-label="Behance">
+                    <i class="fab fa-behance"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
 
     <script>
+        // Countdown Timer
         function updateCountdown() {
             const eventDate = new Date("February 17, 2026 19:00:00").getTime();
             const now = new Date().getTime();
             const timeLeft = eventDate - now;
-            
+
             if (timeLeft > 0) {
-                document.getElementById("days").textContent = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                document.getElementById("hours").textContent = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById("minutes").textContent = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                document.getElementById("seconds").textContent = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                document.getElementById("days").textContent = String(days).padStart(2, '0');
+                document.getElementById("hours").textContent = String(hours).padStart(2, '0');
+                document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
+
+                // Update progress bar
+                const totalDuration = eventDate - new Date("January 1, 2026 00:00:00").getTime();
+                const elapsed = now - new Date("January 1, 2026 00:00:00").getTime();
+                const progress = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
+                document.getElementById("progress-bar").style.width = progress + '%';
+                document.getElementById("progress-text").textContent = days + ' days remaining';
+            } else {
+                document.getElementById("days").textContent = '00';
+                document.getElementById("hours").textContent = '00';
+                document.getElementById("minutes").textContent = '00';
+                document.getElementById("seconds").textContent = '00';
+                document.getElementById("progress-bar").style.width = '100%';
+                document.getElementById("progress-text").textContent = 'Ramadan Mubarak!';
             }
         }
         setInterval(updateCountdown, 1000);
         updateCountdown();
-    </script>
 
-    <!-- Social Media Icons -->
-    <div class="social-icons">
-        <a href="https://linkedin.com/in/shah-md-arshad-rahman-ziban-484649263" target="_blank" class="text-2xl text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
-        <a href="https://github.com/arshadziban" target="_blank" class="text-2xl text-gray-800 hover:text-gray-900"><i class="fab fa-github"></i></a>
-        <a href="https://www.facebook.com/share/1HanqZhnE8/" target="_blank" class="text-2xl text-blue-500 hover:text-blue-700"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.behance.net/arshadziban" target="_blank" class="text-2xl text-black hover:text-gray-700"><i class="fab fa-behance"></i></a>
-    </div>
+        // Floating Particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const count = window.innerWidth < 768 ? 8 : 15;
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                particle.style.animationDelay = (Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+    </script>
 </body>
 </html>
