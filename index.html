@@ -240,6 +240,15 @@
         .delay-7 { animation-delay: 0.7s; }
 
         /* Responsive */
+        @media (max-width: 480px) {
+            .arch-frame { padding: 20px 14px; }
+            .glass-card { border-radius: 16px; }
+            .countdown-card { min-width: 68px; padding: 12px 8px; border-radius: 12px; }
+            .countdown-number { font-size: 2.1rem; }
+            .countdown-label { font-size: 0.62rem; letter-spacing: 1px; }
+            .hadith-card { padding: 16px; }
+            .social-link { width: 38px; height: 38px; font-size: 0.9rem; }
+        }
         @media (min-width: 640px) {
             .countdown-card { min-width: 110px; padding: 24px 16px; }
             .countdown-number { font-size: 3.5rem; }
@@ -262,7 +271,7 @@
     <div id="particles"></div>
 
     <!-- Main Content -->
-    <main class="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 flex flex-col items-center justify-center relative z-10 mb-20">
+    <main class="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 flex flex-col items-center justify-center relative z-10 mb-24 sm:mb-20">
 
         <!-- Site Title -->
         <div class="text-center animate-fade-in delay-2 mt-2">
@@ -292,10 +301,10 @@
 
             <!-- Event Date -->
             <div class="text-center mb-2">
-                <p class="text-sm sm:text-base text-cream-dark/80 font-light">
+                <p class="text-sm sm:text-base text-cream-dark/80 font-light leading-relaxed">
                     <i class="far fa-calendar-alt text-gold mr-2"></i>
                     Evening of Tue, Feb 17, 2026
-                    <span class="mx-2 text-gold/40">|</span>
+                    <span class="mx-2 text-gold/40 hidden sm:inline">|</span>
                     1st Ramadan 1447 AH
                 </p>
             </div>
@@ -304,22 +313,22 @@
             </p>
 
             <!-- Countdown Timer -->
-            <div id="countdown" class="flex justify-center items-center gap-3 sm:gap-4 md:gap-6 flex-wrap">
+            <div id="countdown" class="flex justify-center items-center gap-2 sm:gap-4 md:gap-6 flex-wrap">
                 <div class="countdown-card animate-fade-in delay-4">
                     <div class="countdown-number" id="days">00</div>
                     <div class="countdown-label">Days</div>
                 </div>
-                <span class="text-2xl sm:text-3xl text-gold/40 font-light self-start mt-4 sm:mt-6">:</span>
+                <span class="hidden sm:inline text-2xl sm:text-3xl text-gold/40 font-light self-start mt-4 sm:mt-6">:</span>
                 <div class="countdown-card animate-fade-in delay-5">
                     <div class="countdown-number" id="hours">00</div>
                     <div class="countdown-label">Hours</div>
                 </div>
-                <span class="text-2xl sm:text-3xl text-gold/40 font-light self-start mt-4 sm:mt-6">:</span>
+                <span class="hidden sm:inline text-2xl sm:text-3xl text-gold/40 font-light self-start mt-4 sm:mt-6">:</span>
                 <div class="countdown-card animate-fade-in delay-6">
                     <div class="countdown-number" id="minutes">00</div>
                     <div class="countdown-label">Minutes</div>
                 </div>
-                <span class="text-2xl sm:text-3xl text-gold/40 font-light self-start mt-4 sm:mt-6">:</span>
+                <span class="hidden sm:inline text-2xl sm:text-3xl text-gold/40 font-light self-start mt-4 sm:mt-6">:</span>
                 <div class="countdown-card pulse-active animate-fade-in delay-7">
                     <div class="countdown-number" id="seconds">00</div>
                     <div class="countdown-label">Seconds</div>
@@ -410,12 +419,12 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer fixed bottom-0 left-0 right-0 z-50 py-3 px-6">
+    <footer class="footer fixed bottom-0 left-0 right-0 z-50 py-3 px-4 sm:px-6">
         <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <p class="text-xs text-white/30 order-2 sm:order-1">
                 Made with <i class="fas fa-heart text-gold/50 mx-1"></i> for the Ummah
             </p>
-            <div class="flex items-center gap-3 order-1 sm:order-2">
+            <div class="flex items-center gap-2 sm:gap-3 order-1 sm:order-2">
                 <a href="https://linkedin.com/in/shah-md-arshad-rahman-ziban-484649263" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
